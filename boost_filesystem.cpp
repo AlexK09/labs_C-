@@ -70,7 +70,7 @@ void Bypass(boost::filesystem::path s) {
 		else {
 
 			
-			int flag = 1;
+			int flag = 0;
 			std::string str = "";
 			str = x.path().filename().string().substr(0, x.path().stem().string().length());
 			
@@ -80,44 +80,25 @@ void Bypass(boost::filesystem::path s) {
 			if (proverka1(str) != 1) continue;
 
 			
-			while (str[pos] != '_') {
-				
-				buffer += str[pos];
-				pos++;
-
-			}
-			if (buffer != "balance")
-				flag = proverkabalance(pos, str);
-
-
-			buffer = "";
-			pos++;
-			while (str[pos] != '_') {
-				
-				if (str[pos] != '0' && str[pos] != '1' && str[pos] != '2' && str[pos] != '3' && str[pos] != '4' &&
-					str[pos] != '5' && str[pos] != '6' && str[pos] != '7' && str[pos] != '8' && str[pos] != '9') {
-					flag = 0;
-					break;
-				}
-
-				buffer += str[pos];
-				pos++;
-			}
-			if (buffer.length() != 8) {
-				flag = 0;
-			}
 			
-			flag = proverkanumber(pos, str);
+				flag += proverkabalance(pos, str);
+
+
+			buffer = "";
+			pos++;
+			
+			
+			flag += proverkanumber(pos, str);
 			buffer = "";
 			pos++;
 
 
-			flag = proverkakonec(pos, str);
+			flag += proverkakonec(pos, str);
 
-			if (str.length() != 25) flag == 0;
+			if (str.length() != 25) flag = 0;
 			pos = 0;
 
-			if (boost::filesystem::is_regular_file(x) && flag == 1) {
+			if (boost::filesystem::is_regular_file(x) && flag == 3) {
 				
 				std::cout << x.path().parent_path().filename() << " " << x.path().filename() << '\n';
 				Account_Broker.insert(std::pair<std::string, std::string>(x.path().filename().string().substr(8, 8), x.path().parent_path().filename().string()));
@@ -147,6 +128,7 @@ int main() {
 	}
 	return 0;
 }
+
 
 
 
